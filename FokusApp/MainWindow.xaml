@@ -1,0 +1,36 @@
+<Window x:Class="FokusApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Fokus" Width="1280" Height="760" MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen" Background="{StaticResource BgBrush}"
+        FontFamily="Segoe UI">
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" LastChildFill="False">
+            <StackPanel DockPanel.Dock="Top">
+                <Button x:Name="BtnDashboard" Style="{StaticResource NeuButton}" Width="56" Height="56" FontSize="22"
+        Content="⌂" Tag="Dashboard" ToolTip="Dashboard" Click="Nav_Click"/>
+                <Button Style="{StaticResource NeuButton}" Width="56" Height="56" FontSize="22"
+                        Content="◔" Tag="Pomodoro" ToolTip="Pomodoro" Click="Nav_Click"/>
+                <Button Style="{StaticResource NeuButton}" Width="56" Height="56" FontSize="22"
+                        Content="✎" Tag="Notes" ToolTip="Catatan &amp; Tugas" Click="Nav_Click"/>
+                <Button Style="{StaticResource NeuButton}" Width="56" Height="56" FontSize="22"
+                        Content="♪" Tag="Alarm" ToolTip="Alarm &amp; Adzan" Click="Nav_Click"/>
+            </StackPanel>
+
+            <!-- Menu bawah: Keluar paling bawah, Pengaturan di atasnya -->
+            <Button DockPanel.Dock="Bottom" Style="{StaticResource NeuButton}" Width="56" Height="56"
+                    FontFamily="Segoe MDL2 Assets" FontSize="22" Content="&#xE7E8;"
+                    ToolTip="Keluar" Click="Logout_Click"/>
+            <Button DockPanel.Dock="Bottom" Style="{StaticResource NeuButton}" Width="56" Height="56"
+                    FontFamily="Segoe MDL2 Assets" FontSize="22" Content="&#xE713;"
+                    Tag="Settings" ToolTip="Pengaturan" Click="Nav_Click"/>
+        </DockPanel>
+
+        <ContentControl x:Name="MainContent" Grid.Column="1" Margin="10,0,0,0"/>
+    </Grid>
+</Window>

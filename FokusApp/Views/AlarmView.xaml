@@ -1,0 +1,53 @@
+<UserControl x:Class="FokusApp.Views.AlarmView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ContentControl Style="{StaticResource NeuCard}">
+            <StackPanel>
+                <TextBlock Text="Jadwal sholat - Jakarta" Style="{StaticResource Heading}"/>
+                <Grid Margin="0,14,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Subuh" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="04:34" FontSize="20" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Grid.Row="1" Text="Dzuhur" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="11:52" FontSize="20" Foreground="{StaticResource AccentBrush}"/>
+                    <TextBlock Grid.Row="2" Text="Ashar" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="15:10" FontSize="20" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Grid.Row="3" Text="Maghrib" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="17:56" FontSize="20" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Grid.Row="4" Text="Isya" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="19:04" FontSize="20" Foreground="{StaticResource TextBrush}"/>
+                </Grid>
+            </StackPanel>
+        </ContentControl>
+
+        <ContentControl Grid.Column="1" Style="{StaticResource NeuCard}">
+            <StackPanel>
+                <TextBlock Text="Alarm" Style="{StaticResource Heading}"/>
+                <CheckBox Content="05:00  -  Setiap hari" IsChecked="True" FontSize="18" Margin="0,16,0,0"
+                          Foreground="{StaticResource TextBrush}"/>
+                <CheckBox Content="07:30  -  Senin sampai Jumat" IsChecked="True" FontSize="18" Margin="0,14,0,0"
+                          Foreground="{StaticResource TextBrush}"/>
+                <CheckBox Content="13:00  -  Sabtu, Minggu" FontSize="18" Margin="0,14,0,0"
+                          Foreground="{StaticResource TextBrush}"/>
+                <Button Content="Tambah alarm" Width="170" Height="46" Margin="0,24,0,0"
+                        HorizontalAlignment="Left" Style="{StaticResource NeuButtonAccent}"/>
+            </StackPanel>
+        </ContentControl>
+    </Grid>
+</UserControl>

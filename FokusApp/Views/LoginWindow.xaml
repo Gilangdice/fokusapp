@@ -1,0 +1,40 @@
+<Window x:Class="FokusApp.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Fokus - Masuk" Width="460" Height="740" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" Background="{StaticResource BgBrush}"
+        FontFamily="Segoe UI">
+    <Grid Margin="24">
+        <ContentControl Style="{StaticResource NeuCard}" Padding="34" VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="F" FontSize="44" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Selamat datang" FontSize="24" FontWeight="Bold"
+                           Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                <TextBlock Text="Masuk untuk mulai fokus" Style="{StaticResource Muted}"
+                           HorizontalAlignment="Center" Margin="0,2,0,22"/>
+
+                <TextBlock Text="Username atau email" Style="{StaticResource Muted}" Margin="6,0,0,0"/>
+                <TextBox x:Name="UserBox" Style="{StaticResource NeuTextBox}"/>
+
+                <TextBlock Text="Password" Style="{StaticResource Muted}" Margin="6,10,0,0"/>
+                <PasswordBox x:Name="PassBox" Style="{StaticResource NeuPasswordBox}"/>
+
+                <TextBlock x:Name="ErrorText" Foreground="{StaticResource AccentBrush}" FontSize="13"
+                           Margin="6,8,0,0" MinHeight="18" TextWrapping="Wrap"/>
+
+                <Button Content="Masuk" Height="48" Margin="0,10,0,0" IsDefault="True"
+                        Style="{StaticResource NeuButtonAccent}" Click="Login_Click"/>
+
+                <TextBlock Text="atau" Style="{StaticResource Muted}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+
+                <Button x:Name="GoogleButton" Content="G   Masuk dengan Google" Height="48" Margin="0,10,0,0"
+                        Style="{StaticResource NeuButton}" Click="Google_Click"/>
+
+                <Button Content="Belum punya akun? Daftar" Height="40" Margin="0,18,0,0"
+                        Style="{StaticResource NeuButton}" Click="Register_Click"/>
+
+            </StackPanel>
+        </ContentControl>
+    </Grid>
+</Window>

@@ -1,0 +1,136 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="BgColor">#E6E9EE</Color>
+    <Color x:Key="HiColor">#FFFFFF</Color>
+    <Color x:Key="ShColor">#C3C8D2</Color>
+    <Color x:Key="AccentColor">#FF4A3D</Color>
+
+    <SolidColorBrush x:Key="BgBrush" Color="{StaticResource BgColor}"/>
+    <SolidColorBrush x:Key="ShBrush" Color="{StaticResource ShColor}"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+    <SolidColorBrush x:Key="TextBrush" Color="#3B4252"/>
+    <SolidColorBrush x:Key="MutedBrush" Color="#8B93A3"/>
+
+    <!-- Kartu timbul -->
+    <Style x:Key="NeuCard" TargetType="ContentControl">
+        <Setter Property="Padding" Value="22"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Grid Margin="10">
+                        <Border Background="{StaticResource BgBrush}" CornerRadius="22">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource HiColor}" Direction="135"
+                                                  ShadowDepth="7" BlurRadius="14" Opacity="1"/>
+                            </Border.Effect>
+                        </Border>
+                        <Border Background="{StaticResource BgBrush}" CornerRadius="22">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource ShColor}" Direction="315"
+                                                  ShadowDepth="7" BlurRadius="14" Opacity="1"/>
+                            </Border.Effect>
+                        </Border>
+                        <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Tombol pil timbul -->
+    <Style x:Key="NeuButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource BgBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="Root" RenderTransformOrigin="0.5,0.5">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="26">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource HiColor}" Direction="135"
+                                                  ShadowDepth="5" BlurRadius="10" Opacity="1"/>
+                            </Border.Effect>
+                        </Border>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="26">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource ShColor}" Direction="315"
+                                                  ShadowDepth="5" BlurRadius="10" Opacity="1"/>
+                            </Border.Effect>
+                        </Border>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Root" Property="Opacity" Value="0.85"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NeuButtonAccent" TargetType="Button" BasedOn="{StaticResource NeuButton}">
+        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <!-- Input cekung (diakali dengan gradient gelap-ke-terang) -->
+    <LinearGradientBrush x:Key="InsetBorderBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#C3C8D2" Offset="0"/>
+        <GradientStop Color="#FFFFFF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <Style x:Key="NeuTextBox" TargetType="TextBox">
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="0,6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{StaticResource BgBrush}" CornerRadius="24"
+                            BorderBrush="{StaticResource InsetBorderBrush}" BorderThickness="3"
+                            Padding="16,11">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NeuPasswordBox" TargetType="PasswordBox">
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="0,6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border Background="{StaticResource BgBrush}" CornerRadius="24"
+                            BorderBrush="{StaticResource InsetBorderBrush}" BorderThickness="3"
+                            Padding="16,11">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Muted" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+        <Setter Property="FontSize" Value="13"/>
+    </Style>
+    <Style x:Key="Heading" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+</ResourceDictionary>
