@@ -1,52 +1,186 @@
+
 <UserControl x:Class="FokusApp.Views.AlarmView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Kartu Jadwal Salat -->
         <ContentControl Style="{StaticResource NeuCard}">
             <StackPanel>
-                <TextBlock Text="Jadwal sholat - Jakarta" Style="{StaticResource Heading}"/>
-                <Grid Margin="0,14,0,0">
+                <TextBlock Text="Jadwal Salat"
+                           Style="{StaticResource Heading}"/>
+
+                <TextBlock Text="Pilih lokasi kamu"
+                           Margin="0,12,0,5"
+                           Foreground="{StaticResource TextBrush}"/>
+
+                <TextBlock Text="Provinsi"
+                           Margin="0,8,0,4"
+                           Foreground="{StaticResource TextBrush}"/>
+                <ComboBox x:Name="ProvinceComboBox"
+                          Height="36"
+                          Padding="6"
+                          IsEditable="False"
+                          ToolTip="Pilih provinsi"/>
+
+                <TextBlock Text="Kabupaten / Kota"
+                           Margin="0,10,0,4"
+                           Foreground="{StaticResource TextBrush}"/>
+                <ComboBox x:Name="RegencyComboBox"
+                          Height="36"
+                          Padding="6"
+                          IsEnabled="False"
+                          ToolTip="Pilih kabupaten atau kota"/>
+
+                <TextBlock Text="Kecamatan"
+                           Margin="0,10,0,4"
+                           Foreground="{StaticResource TextBrush}"/>
+                <ComboBox x:Name="DistrictComboBox"
+                          Height="36"
+                          Padding="6"
+                          IsEnabled="False"
+                          ToolTip="Pilih kecamatan"/>
+
+                <Button x:Name="LoadPrayerTimesButton"
+                        Content="Tampilkan Jadwal"
+                        Width="170"
+                        Height="40"
+                        Margin="0,16,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource NeuButtonAccent}"
+                        IsEnabled="False"/>
+
+                <TextBlock Text="Waktu Salat"
+                           Style="{StaticResource Heading}"
+                           Margin="0,22,0,5"/>
+
+                <TextBlock x:Name="SelectedLocationText"
+                           Text="Belum ada lokasi dipilih"
+                           FontSize="12"
+                           Foreground="{StaticResource TextBrush}"
+                           Margin="0,0,0,8"/>
+
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="32"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Subuh" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="04:34" FontSize="20" Foreground="{StaticResource TextBrush}"/>
-                    <TextBlock Grid.Row="1" Text="Dzuhur" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="11:52" FontSize="20" Foreground="{StaticResource AccentBrush}"/>
-                    <TextBlock Grid.Row="2" Text="Ashar" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="15:10" FontSize="20" Foreground="{StaticResource TextBrush}"/>
-                    <TextBlock Grid.Row="3" Text="Maghrib" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="17:56" FontSize="20" Foreground="{StaticResource TextBrush}"/>
-                    <TextBlock Grid.Row="4" Text="Isya" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="19:04" FontSize="20" Foreground="{StaticResource TextBrush}"/>
+
+                    <TextBlock Grid.Row="0" Text="Subuh"
+                               VerticalAlignment="Center"
+                               Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock x:Name="FajrText"
+                               Grid.Row="0" Grid.Column="1"
+                               Text="--:--"
+                               FontSize="17"
+                               Foreground="{StaticResource TextBrush}"/>
+
+                    <TextBlock Grid.Row="1" Text="Dzuhur"
+                               VerticalAlignment="Center"
+                               Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock x:Name="DhuhrText"
+                               Grid.Row="1" Grid.Column="1"
+                               Text="--:--"
+                               FontSize="17"
+                               Foreground="{StaticResource TextBrush}"/>
+
+                    <TextBlock Grid.Row="2" Text="Ashar"
+                               VerticalAlignment="Center"
+                               Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock x:Name="AsrText"
+                               Grid.Row="2" Grid.Column="1"
+                               Text="--:--"
+                               FontSize="17"
+                               Foreground="{StaticResource TextBrush}"/>
+
+                    <TextBlock Grid.Row="3" Text="Maghrib"
+                               VerticalAlignment="Center"
+                               Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock x:Name="MaghribText"
+                               Grid.Row="3" Grid.Column="1"
+                               Text="--:--"
+                               FontSize="17"
+                               Foreground="{StaticResource TextBrush}"/>
+
+                    <TextBlock Grid.Row="4" Text="Isya"
+                               VerticalAlignment="Center"
+                               Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock x:Name="IshaText"
+                               Grid.Row="4" Grid.Column="1"
+                               Text="--:--"
+                               FontSize="17"
+                               Foreground="{StaticResource TextBrush}"/>
                 </Grid>
             </StackPanel>
         </ContentControl>
 
-        <ContentControl Grid.Column="1" Style="{StaticResource NeuCard}">
+        <!-- Kartu Pengaturan Alarm -->
+        <ContentControl Grid.Column="1"
+                        Style="{StaticResource NeuCard}">
             <StackPanel>
-                <TextBlock Text="Alarm" Style="{StaticResource Heading}"/>
-                <CheckBox Content="05:00  -  Setiap hari" IsChecked="True" FontSize="18" Margin="0,16,0,0"
+                <TextBlock Text="Pengaturan Alarm"
+                           Style="{StaticResource Heading}"/>
+
+                <TextBlock Text="Pilih waktu salat yang ingin diingatkan."
+                           FontSize="13"
+                           Margin="0,12,0,15"
+                           Foreground="{StaticResource TextBrush}"
+                           TextWrapping="Wrap"/>
+
+                <CheckBox x:Name="FajrAlarmCheckBox"
+                          Content="Alarm Subuh"
+                          IsChecked="False"
+                          FontSize="17"
+                          Margin="0,8,0,8"
                           Foreground="{StaticResource TextBrush}"/>
-                <CheckBox Content="07:30  -  Senin sampai Jumat" IsChecked="True" FontSize="18" Margin="0,14,0,0"
+
+                <CheckBox x:Name="DhuhrAlarmCheckBox"
+                          Content="Alarm Dzuhur"
+                          IsChecked="False"
+                          FontSize="17"
+                          Margin="0,8,0,8"
                           Foreground="{StaticResource TextBrush}"/>
-                <CheckBox Content="13:00  -  Sabtu, Minggu" FontSize="18" Margin="0,14,0,0"
+
+                <CheckBox x:Name="AsrAlarmCheckBox"
+                          Content="Alarm Ashar"
+                          IsChecked="False"
+                          FontSize="17"
+                          Margin="0,8,0,8"
                           Foreground="{StaticResource TextBrush}"/>
-                <Button Content="Tambah alarm" Width="170" Height="46" Margin="0,24,0,0"
-                        HorizontalAlignment="Left" Style="{StaticResource NeuButtonAccent}"/>
+
+                <CheckBox x:Name="MaghribAlarmCheckBox"
+                          Content="Alarm Maghrib"
+                          IsChecked="False"
+                          FontSize="17"
+                          Margin="0,8,0,8"
+                          Foreground="{StaticResource TextBrush}"/>
+
+                <CheckBox x:Name="IshaAlarmCheckBox"
+                          Content="Alarm Isya"
+                          IsChecked="False"
+                          FontSize="17"
+                          Margin="0,8,0,8"
+                          Foreground="{StaticResource TextBrush}"/>
+
+                <Button x:Name="SaveAlarmSettingsButton"
+                        Content="Simpan Pengaturan Alarm"
+                        Width="210"
+                        Height="44"
+                        Margin="0,24,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource NeuButtonAccent}"/>
             </StackPanel>
         </ContentControl>
     </Grid>
