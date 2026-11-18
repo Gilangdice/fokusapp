@@ -1,74 +1,49 @@
 using System;
-using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
+using FokusApp.Services;
 
 namespace FokusApp.Views
 {
     public partial class PomodoroView : UserControl
     {
-        // Diameter garis tengah cincin = 300 - 14 (tebal garis); satuan dash = tebal garis
         private const double Units = Math.PI * (300 - 14) / 14;
-
-        private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(1) };
-        private readonly int _total = 25 * 60;
-        private int _left = 25 * 60;
+        private readonly PomodoroService _pomodoro = PomodoroService.Instance;
 
         public PomodoroView()
         {
             InitializeComponent();
-            _timer.Tick += Timer_Tick;
+            _pomodoro.StateChanged += Render;
+            Unloaded += (_, _) => _pomodoro.StateChanged -= Render;
             Render();
-            Unloaded += (_, _) => _timer.Stop();
         }
 
         private void Render()
         {
-            ClockText.Text = $"{_left / 60:00}:{_left % 60:00}";
-            double fraction = (double)_left / _total;
-            ProgressRing.Visibility = _left <= 0 ? Visibility.Hidden : Visibility.Visible;
-            ProgressRing.StrokeDashArray = new DoubleCollection { fraction * Units, 100 };
-        }
+            ClockText.Text = _pomodoro.FormattedTime;
+            StatusText.Text = _pomodoro.StatusText;
 
-        private void Timer_Tick(object? sender, EventArgs e)
-        {
-            _left--;
-            Render();
-            if (_left <= 0)
-            {
-                _timer.Stop();
+            if (_pomodoro.IsRunning)
+                StartButton.Content = "Jeda";
+            else if (_pomodoro.SecondsLeft < _pomodoro.TotalSeconds && _pomodoro.SecondsLeft > 0)
+                StartButton.Content = "Lanjut";
+            else
                 StartButton.Content = "Mulai";
-                StatusText.Text = "Sesi selesai";
-                SystemSounds.Asterisk.Play();
-            }
+
+            double fraction = (double)_pomodoro.SecondsLeft / _pomodoro.TotalSeconds;
+            ProgressRing.Visibility = _pomodoro.SecondsLeft <= 0 ? Visibility.Hidden : Visibility.Visible;
+            ProgressRing.StrokeDashArray = new DoubleCollection { fraction * Units, 100 };
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            if (_timer.IsEnabled)
-            {
-                _timer.Stop();
-                StartButton.Content = "Lanjut";
-                StatusText.Text = "Dijeda";
-            }
-            else
-            {
-                if (_left <= 0) { _left = _total; Render(); }
-                _timer.Start();
-                StartButton.Content = "Jeda";
-                StatusText.Text = "Sedang fokus";
-            }
+            _pomodoro.ToggleStartPause();
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            _timer.Stop();
-            _left = _total;
-            StartButton.Content = "Mulai";
-            StatusText.Text = "Siap memulai";
-            Render();
+            _pomodoro.Reset();
         }
     }
 }
