@@ -1,7 +1,8 @@
-
 using FokusApp.Services;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace FokusApp.Views
             await LoadProvinces();
             await RestoreSavedLocation();
             LoadAlarmSettings();
+            RefreshCustomAlarmList();
         }
 
         private async Task LoadProvinces()
@@ -429,6 +431,115 @@ namespace FokusApp.Views
                 return "--:--";
 
             return time.Split(' ')[0];
+        }
+
+        // --- Fitur Alarm Kustom + Pilih Sound ---
+
+        private void AddCustomAlarmButton_Click(object sender, RoutedEventArgs e)
+        {
+            string rawTime = CustomTimeInput.Text.Trim();
+            string label = CustomLabelInput.Text.Trim();
+
+            if (!TimeSpan.TryParseExact(rawTime, @"hh\:mm", null, out _))
+            {
+                MessageBox.Show(
+                    "Format jam harus HH:mm (contoh: 07:30 atau 21:05).",
+                    "Format Salah",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            CustomAlarmService.Instance.AddAlarm(rawTime, label);
+            CustomLabelInput.Clear();
+            RefreshCustomAlarmList();
+        }
+
+        private void RefreshCustomAlarmList()
+        {
+            CustomAlarmListPanel.Children.Clear();
+
+            var alarms = CustomAlarmService.Instance.Alarms;
+            if (alarms.Count == 0)
+            {
+                CustomAlarmListPanel.Children.Add(new TextBlock
+                {
+                    Text = "Belum ada alarm kustom.",
+                    FontSize = 13,
+                    Opacity = 0.6,
+                    Margin = new Thickness(0, 6, 0, 0)
+                });
+                return;
+            }
+
+            foreach (var alarm in alarms)
+            {
+                var row = new Grid { Margin = new Thickness(0, 0, 0, 8) };
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                string soundName = string.IsNullOrWhiteSpace(alarm.SoundPath)
+                    ? "Default"
+                    : Path.GetFileName(alarm.SoundPath);
+
+                var cb = new CheckBox
+                {
+                    Content = $"{alarm.Time}  —  {alarm.Label} ({soundName})",
+                    IsChecked = alarm.IsEnabled,
+                    FontSize = 14,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                cb.Checked += (_, _) => CustomAlarmService.Instance.ToggleAlarm(alarm.Id, true);
+                cb.Unchecked += (_, _) => CustomAlarmService.Instance.ToggleAlarm(alarm.Id, false);
+
+                var soundBtn = new Button
+                {
+                    Content = "🎵",
+                    Width = 30,
+                    Height = 28,
+                    Margin = new Thickness(8, 0, 0, 0),
+                    ToolTip = $"Ganti suara alarm (Saat ini: {soundName})"
+                };
+                soundBtn.Click += (_, _) =>
+                {
+                    var dialog = new OpenFileDialog
+                    {
+                        Title = "Pilih Suara Alarm",
+                        Filter = "File Audio (*.mp3;*.wav)|*.mp3;*.wav"
+                    };
+
+                    if (dialog.ShowDialog() == true)
+                    {
+                        CustomAlarmService.Instance.UpdateAlarmSound(alarm.Id, dialog.FileName);
+                        RefreshCustomAlarmList();
+                    }
+                };
+
+                var deleteBtn = new Button
+                {
+                    Content = "✕",
+                    Width = 28,
+                    Height = 28,
+                    Margin = new Thickness(6, 0, 0, 0),
+                    ToolTip = "Hapus alarm"
+                };
+                deleteBtn.Click += (_, _) =>
+                {
+                    CustomAlarmService.Instance.DeleteAlarm(alarm.Id);
+                    RefreshCustomAlarmList();
+                };
+
+                Grid.SetColumn(cb, 0);
+                Grid.SetColumn(soundBtn, 1);
+                Grid.SetColumn(deleteBtn, 2);
+
+                row.Children.Add(cb);
+                row.Children.Add(soundBtn);
+                row.Children.Add(deleteBtn);
+
+                CustomAlarmListPanel.Children.Add(row);
+            }
         }
     }
 }
